@@ -10,8 +10,8 @@ How to run:
 
     timer.c can be compiled into any name you wish.
 
-    If the executible of timer.c is named "timer", enter ./timer to 
-    run thr program.
+    If the executable of timer.c is named "timer", enter ./timer to 
+    run the program.
 
 
 timer.c is easily configured to run only one app instead of two.
