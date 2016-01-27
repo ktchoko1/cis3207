@@ -4,7 +4,7 @@
  *
  * Timer.c runs the executable, "app", twice. "app" runs for about 2 minutes
  * by itself. Program waits 30 seconds before executing "app" for the second
- * time. End result is to have to distinct processes of "app" executing 
+ * time. End result is to have two distinct processes of "app" executing 
  * simulaneously. 
  * Program measures the time (in microseconds) it takes for "app" to begin
  * executing with respect to the time it was called. Calculations are sent
