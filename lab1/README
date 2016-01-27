@@ -1,0 +1,18 @@
+Details of code are place in the respective headers.
+
+Both timer.c and application.c were written on a 64-bit machine with Ubuntu 14.04.3 LTS
+
+How to run:
+    timer.c and application.c must be in the same directory.
+
+    compile application.c as an executable named "app"
+        i.e. gcc -o app application.c
+
+    timer.c can be compiled into any name you wish.
+
+    If the executible of timer.c is named "timer", enter ./timer to 
+    run thr program.
+
+
+timer.c is easily configured to run only one app instead of two.
+
