@@ -13,7 +13,7 @@
  * Program can take 1 or 2 (optional) input arguments:
  *   
  *    1. time (in microseconds), in the range (0 - 999999) 
- *    2. an int to append to the name of the text file
+ *    2. an int to append to the name of the text file (dependent on arg 1)
  */
 
 #include <stdlib.h>
