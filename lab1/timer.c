@@ -14,6 +14,10 @@
  * time difference is measured twice. The first measurement is started right
  * before the calling of fork(). The second measurement is starting in the child
  * process resulting from the calling of fork()
+ * 
+ * Results vary depending on how long timer.c sleeps after 1st fork/exec. Program
+ * can be used to check general trends of how long it takes to fork/execute,
+ * (t3 - t1), or to just execute (t3 - t2).
  */
 
 #include <sys/time.h>           /* for stuct timeval and gettimeofday() */
