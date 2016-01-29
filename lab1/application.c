@@ -55,10 +55,11 @@ int main(int argc, char **argv) {
             app_num = atoi(argv[3]);
         
         printf("app #%d\n", app_num);
-        printf("t1: %d microsec, t3: %d microsec\nt3 - t1: %d microseconds\n", 
-               t1, (int)t3.tv_usec, (int)t3.tv_usec - t1);
-        printf("t2: %d microsec, t3: %d microsec\nt3 - t2: %d microseconds\n", 
-               t2, (int)t3.tv_usec, (int)t3.tv_usec - t2);
+        printf("t1: %d microsec\n", t1);
+        printf("t2: %d microsec\n", t2);
+        printf("t3: %d microsec\n", (int)t3.tv_usec);
+        printf("t3 - t2: %d microseconds\n", (int)t3.tv_usec - t2);
+        printf("t3 - t1: %d microseconds\n", (int)t3.tv_usec - t1);
     }
 
     srand(time(NULL));
