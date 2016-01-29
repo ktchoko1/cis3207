@@ -34,25 +34,31 @@ int compare(char *, FILE *);
 
 int main(int argc, char **argv) {
     FILE *fp;
-    struct timeval time_end;
+    struct timeval t3;
     char *record;       /* string to be written to file */
     char *line_read;    /* line chosen for comparison */
     char filename[FILE_NAME_LEN];
-    int time_start;
+    int t1, t2;         /* optional input arguments for t1 and t2 in timer.c */
     int app_num = 0;
     int i, j;
     
-    if (gettimeofday(&time_end, NULL) != 0) {
+    if (gettimeofday(&t3, NULL) != 0) {
         printf("Error getting time.\n");
         return 1;
-    } 
-    if (argc > 1) {
-        time_start = atoi(argv[1]);
-        if (argc > 2)
-            app_num = atoi(argv[2]);
-        printf("\n(I am in the application, #%d)\n\n", app_num);
-        printf("time_start: %d microsec, time end: %d microsec\ndiff: %d microseconds\n", 
-               time_start, (int)time_end.tv_usec, (int)time_end.tv_usec - time_start);
+    }
+
+    if (argc > 2) {
+        t1 = atoi(argv[1]);
+        t2 = atoi(argv[2]);
+       
+        if (argc > 3) 
+            app_num = atoi(argv[3]);
+        
+        printf("app #%d\n", app_num);
+        printf("t1: %d microsec, t3: %d microsec\nt3 - t1: %d microseconds\n", 
+               t1, (int)t3.tv_usec, (int)t3.tv_usec - t1);
+        printf("t2: %d microsec, t3: %d microsec\nt3 - t2: %d microseconds\n", 
+               t2, (int)t3.tv_usec, (int)t3.tv_usec - t2);
     }
 
     srand(time(NULL));

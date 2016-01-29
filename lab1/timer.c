@@ -6,37 +6,55 @@
  * by itself. Program waits 30 seconds before executing "app" for the second
  * time. End result is to have two distinct processes of "app" executing 
  * simulaneously. 
+ * 
  * Program measures the time (in microseconds) it takes for "app" to begin
  * executing with respect to the time it was called. Calculations are sent
  * through stdout of "app".
+ *
+ * time difference is measured twice. The first measurement is started right
+ * before the calling of fork(). The second measurement is starting in the child
+ * process resulting from the calling of fork()
  */
 
 #include <sys/time.h>           /* for stuct timeval and gettimeofday() */
 #include <unistd.h>
 #include <stdio.h>
 
-#define T_START_LEN 7
+#define TIME_BUFFER 7
 
 int main() {
     pid_t childPID;
-    struct timeval time_start;
-    char t_start[T_START_LEN];
+    struct timeval t1;              /* time from before fork */
+    struct timeval t2;              /* time from child process created by fork */
+    char t_start1[TIME_BUFFER];     /* t1 as an argument for app */
+    char t_start2[TIME_BUFFER];     /* t2 an an argument for app */
 
-    printf("in timer about to fork.\n");
-    if (gettimeofday(&time_start, NULL) != 0) {
-        printf("Error getting time.\n");
+    printf("1st time:\n");
+    
+    if (gettimeofday(&t1, NULL) != 0) {
+        printf("Error getting time for t1.\n");
         return 1;
     }
-    printf("TIME START: %d microseconds\n", (int)time_start.tv_usec);
-    childPID = fork();
-    if (childPID < 0) {
+
+    printf("t1 = %d microseconds\n", (int)t1.tv_usec);
+
+    if ((childPID = fork()) < 0) {
         printf("fork failed\n");
         return 1;
     }
+
     if (childPID == 0) {
-        printf("\n\tin child about to execute application\n\n");
-        snprintf(t_start, T_START_LEN, "%d", (int)time_start.tv_usec);
-        if (execl("./app", "app", t_start, "1", NULL) == -1) {
+        if (gettimeofday(&t2, NULL) != 0) {
+            printf("Error getting time for t2.\n");
+            return 1;
+        }
+
+        printf("t2 = %d microseconds\n", (int)t2.tv_usec);
+
+        snprintf(t_start1, TIME_BUFFER, "%d", (int)t1.tv_usec);
+        snprintf(t_start2, TIME_BUFFER, "%d", (int)t2.tv_usec);
+
+        if (execl("./app", "app", t_start1, t_start2, "1", NULL) == -1) {
             printf("Execution of app failed.\n");
             return 1;
         }
@@ -44,20 +62,33 @@ int main() {
 
     /* to execute app twice, include code between these comments */
     sleep(30);
-    if (gettimeofday(&time_start, NULL) != 0) {
+
+    printf("\n2nd time:\n");
+
+    if (gettimeofday(&t1, NULL) != 0) {
         printf("Error getting time.\n");
         return 1;
     }
-    printf("2nd time... TIME START: %d microseconds\n", (int)time_start.tv_usec);
-    childPID = fork();
-    if (childPID < 0) {
+
+    printf("2nd t1 = %d microseconds\n", (int)t1.tv_usec);
+    
+    if ((childPID = fork()) < 0) {
         printf("2nd fork failed\n");
         return 1;
     }
+
     if (childPID == 0) {
-        printf("\n\tin 2nd child about to execute 2nd application\n\n");
-        snprintf(t_start, T_START_LEN, "%d", (int)time_start.tv_usec);
-        if (execl("./app", "app", t_start, "2", NULL) == -1) {
+        if (gettimeofday(&t2, NULL) != 0) {
+            printf("Error getting time for t2.\n");
+            return 1;
+        }
+
+        printf("2nd t2 = %d microseconds\n", (int)t2.tv_usec);
+
+        snprintf(t_start1, TIME_BUFFER, "%d", (int)t1.tv_usec);
+        snprintf(t_start2, TIME_BUFFER, "%d", (int)t2.tv_usec);
+
+        if (execl("./app", "app", t_start1, t_start2, "2", NULL) == -1) {
             printf("Execution of 2nd app failed.\n");
             return 1;
         }
