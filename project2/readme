@@ -1,0 +1,148 @@
+NAME
+        myshell
+
+
+DESCRIPTION
+        Myshell is a simple command line interpreter that executes commands
+        and read from stdin or from a text file. These commands can be any of
+        the internal built-ins listed below, or any executable. All lines of 
+        input must be terminated by a newline character ('\n').
+
+        To use myshell's interactive mode, run the executable without any
+        arguments. To run commands from a text file, run the executable with
+        the text file as an argument.
+
+        Myshell uses System Calls of the Linux Kernel.
+
+
+INTERNAL COMMANDS
+   cd       Change/list currect directory. Given an argument arg, cd changes
+            the current directory to arg, if it exists. Without arguments, cd
+            prints the absolute pathname of the current directory.
+
+   clr      Clears the window of the command prompt.
+
+   dir      Prints a list files and directories to stdout. If given no
+            argument, dir works on the current director. If an argument arg is
+            provided, myshell lists the files and directories inside the
+            directory name arg. 
+
+   echo     Prints arguments to stdout. Echo prints until newline character in
+            detected. Whitespace between arguments (words) is removed and
+            replaced with a single space.
+
+   environ  Prints environement variables to stdout.
+
+   help     Lo and Behold! Help opens this readme up for the convenience of
+            the user for quick and easy access. If user is not happy with the
+            default format, user can redirect the output of help into 
+            something else. See below for more details on redirecting output.
+
+   pause    Pauses operation of the shell until newline is detected.
+
+   quit     Terminates myshell.
+
+
+I/O REDIRECTION
+        Output of commands can be redirected from stdout. Output can be
+        redirected into writing text in a file using the symbol >. The general
+        syntax is:
+
+                cmd1 arg1 ... argN > file1
+
+        where cmd1 sends data through stdout and file1 is the file1 recieving
+        this data. If file1 doesn't exist, it is created. Otherwise it is
+        truncated. Cmd1, arg1, ... , argN, >, and file1 must be separated by
+        any type whitespace except for the newline character '\n'.
+
+        For the case when file1 exists, to append instead of truncating the
+        original file1, use >> instead. Same syntax and rules of whitespace
+        apply.
+
+
+        Input of executing commands can be redirected. Instead of recieving
+        input from stdin, a command can take input from a text file with the
+        command >. The general syntax is:
+
+                cmd1 arg1 ... argN < file1
+
+        where cmd1 is a command or executable that takes input from stdin,
+        arg1 through argN are the potial arguments of cmd1, and file1 is a
+        text file. The input file descripter for cmd1 will then be changed to
+        from stdin to the file descriptor of file1.
+
+        Note that cmd1, arg1, ... , argN, <, and file1 must be separated by
+        any type of whitespace except the newline character ('\n').
+
+
+        Myshell supports a few simple combinations, such as the following:
+
+                cmd1 arg1 ... argN < file1 > file2
+
+        This command changes cmd1 such that it recieves its input from file1,
+        and then the output of arg1 is redirected to be file2. Note that > can
+        be replaced with >> for potential appending.
+
+
+BACKGROUND EXECUTION
+        By default, myshell waits for commands to finish executing before
+        prompting the user for another command. This doesn't have to be the
+        case. By finishing an input command with the symbol &, the resulting
+        command is instead executing in the background, and myshell
+        immediately prompts the user for another command. 
+
+        Consider the general syntax:
+
+                [any logical command] &
+
+        To use &, you simply add it after any command, separated by
+        whitespace, except for newline characters ('\n'). 
+
+
+PIPING
+        You can redirect the standard output of a command into the standard
+        input of another command. This is done by using pipes. The pipe
+        symbol | follows the general syntax:
+
+                cmd1 arg1 ... argN | cmd2 arg1 ... argM
+
+        To the left of | is a command (and its arguments) that sends output to
+        standard output and to the right is a command/arguments that accepts
+        input from the standard input. Everything is separated by arbitrary 
+        whitespace that is not a newline character ('\n').
+
+
+FILES
+     All associated files must be in the same directory as the main
+     executable. 
+
+           myshell.c
+                various functions used as vital components of myshell
+
+           myshell_cmds.c
+                Implementation of internal commands
+
+           myshell.h
+                variable declarations, explicit references to libraries
+
+           readme
+
+
+USER NOTICE
+        Myshell can only support simple commands, such as commands with only
+        one use of piping, and in particular, the pipe must the last operation
+        relating any two commands on the line.
+
+        When executing with a batchfile, that last command must end with a
+        newline character ('\n'), otherwise that command will be ignore.
+
+
+COMPATIBILITY
+        Myshell uses Linux Kernel system calls. Accessibility to those
+        functions is neccessary for the functionality of myshell.
+
+
+AUTHOR
+        Joey Norkin
+        joey.norkin@gmail.com
+
